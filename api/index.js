@@ -1,19 +1,21 @@
+require("path");
+require("dotenv").config({ path: "../.env" });
+
 const express = require("express");
 const app = express();
-const { resolve } = require("path");
-const env = require("dotenv").config({ path: "./.env" });
 const cors = require("cors");
+const PORT = 3000;
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-08-01",
 });
 
-// app.use(express.static(process.env.STATIC_DIR));
 app.use(cors());
 app.use(express.json());
 
 app.get("/config", (req, res) => {
   res.send({
+    blabla: "blabla",
     publishableKey: process.env.STRIPE_PUBLIC_KEY,
   });
 });
@@ -44,6 +46,8 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
-app.listen(5252, () =>
-  console.log(`Node server listening at http://localhost:5252`)
+app.listen(PORT, () =>
+  console.log(`Node server listening at http://localhost:${PORT}`)
 );
+
+module.exports = app;
