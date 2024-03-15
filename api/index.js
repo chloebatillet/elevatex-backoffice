@@ -10,12 +10,14 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-08-01",
 });
 
+
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 app.get("/config", (req, res) => {
   res.send({
-    blabla: "blabla",
     publishableKey: process.env.STRIPE_PUBLIC_KEY,
   });
 });
