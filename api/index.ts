@@ -1,28 +1,34 @@
-require("path");
-require("dotenv").config({ path: "../.env" });
+import dotenv from "dotenv";
+import express from "express";
+import { Request, Response } from "express";
+import cors from "cors";
+import Stripe from "stripe";
 
-const express = require("express");
+dotenv.config();
+
 const app = express();
-const cors = require("cors");
 const PORT = 3000;
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2022-08-01",
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+  apiVersion: "2023-10-16",
 });
-
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.get("/config", (req, res) => {
+app.get("/", (_, res: Response) => {
+  res.send("<h1>Helloooooo</h1>");
+});
+
+app.get("/config", (_, res: Response) => {
   res.send({
     publishableKey: process.env.STRIPE_PUBLIC_KEY,
   });
 });
 
-app.post("/create-payment-intent", async (req, res) => {
+app.post("/create-payment-intent", async (req: Request, res: Response) => {
   try {
     console.log("body: ", req.body);
     const { total } = req.body;
@@ -38,7 +44,7 @@ app.post("/create-payment-intent", async (req, res) => {
     res.send({
       clientSecret: paymentIntent.client_secret,
     });
-  } catch (e) {
+  } catch (e: any) {
     console.log(e);
     return res.status(400).send({
       error: {
@@ -52,4 +58,4 @@ app.listen(PORT, () =>
   console.log(`Node server listening at http://localhost:${PORT}`)
 );
 
-module.exports = app;
+export default app;
