@@ -3,8 +3,6 @@ import express from "express";
 import { Request, Response } from "express";
 import cors from "cors";
 import Stripe from "stripe";
-import { getUsersTable } from "./drizzle/simple-connect";
-import { seed } from "./drizzle/seed";
 
 dotenv.config();
 
@@ -19,11 +17,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-seed();
 
 app.get("/", async (_, res: Response) => {
-  const result = await getUsersTable();
-  console.log(result);
+  // const result = await getUsersTable();
+  // console.log(result);
 
   res.send("<h1>Helloooooo</h1>");
 });

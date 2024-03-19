@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1710863482361,
+      "tag": "0000_warm_captain_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1710871296560,
+      "tag": "0001_peaceful_roulette",
+      "breakpoints": true
+    }
+  ]
+}
