@@ -7,7 +7,7 @@ import Stripe from "stripe";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
   apiVersion: "2023-10-16",
