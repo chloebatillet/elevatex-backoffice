@@ -3,6 +3,8 @@ import express from "express";
 import { Request, Response } from "express";
 import cors from "cors";
 import Stripe from "stripe";
+import { db } from "./drizzle/simple-connect";
+
 // import { productController } from "./controllers/productController";
 
 dotenv.config();
@@ -25,7 +27,10 @@ app.get("/", async (_, res: Response) => {
 
 // Products -----------------------------------------
 app.get("/products", async (_, res: Response) => {
-  res.send("<h1>Products</h1>");
+  try {
+    const products = await db.query.ProductsTable.findMany();
+    res.json(products);
+  } catch (error) {}
 });
 app.get("/products/:slug", async (_, res: Response) => {
   res.send("<h1>Product</h1>");
@@ -39,11 +44,28 @@ app.patch("/update-product/:id", async (_, res: Response) => {
 //* route delete inutile pour le moment, seulement ne pas afficher les produits qui ont 0 stock en front
 
 // Users --------------------------------------------
-app.get("/client", async (_, res: Response) => {
-  res.send("<h1>Client</h1>");
+app.get("/client/:id", async (req, res: Response) => {
+  const { id } = req.params;
+  const client = await db.query.UsersTable.findFirst({
+    where: (users, { eq }) => eq(users.id, Number(id)),
+    with: {
+      ordersPassed: {
+        with: {
+          orderDetails: true,
+          // {
+          //   with: {
+          //     products: true,
+          //   },
+          // },
+        },
+      },
+    },
+  });
+  res.json(client);
 });
 app.get("/clients", async (_, res: Response) => {
-  res.send("<h1>Clients</h1>");
+  const clients = await db.query.UsersTable.findMany();
+  res.json(clients);
 });
 app.post("/new-client", async (_, res: Response) => {
   res.send("<h1>New client</h1>");
@@ -82,7 +104,7 @@ app.post("/create-payment-intent", async (req: Request, res: Response) => {
       automatic_payment_methods: { enabled: true },
     });
 
-    // Send publishable key and PaymentIntent details to client
+    // Send secret key and PaymentIntent details to client
     res.send({
       clientSecret: paymentIntent.client_secret,
     });
