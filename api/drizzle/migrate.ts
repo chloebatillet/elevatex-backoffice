@@ -9,8 +9,8 @@ const db = drizzle(sql);
 const runMigrations = async () => {
   try {
     await migrate(db, { migrationsFolder: "api/drizzle/migrations" });
-
     console.log("Migration successful!");
+    process.exit(0);
   } catch (error) {
     console.error(error);
     process.exit(1);

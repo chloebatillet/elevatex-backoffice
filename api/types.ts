@@ -1,4 +1,4 @@
-interface Contact {
+export interface Contact {
   firstname: string;
   lastname: string;
   address: Address;
@@ -6,7 +6,7 @@ interface Contact {
   email: string;
 }
 
-interface Address {
+export interface Address {
   name?: string;
   address: string;
   postalCode: number;

@@ -2,13 +2,15 @@ import { relations } from "drizzle-orm";
 import {
   integer,
   json,
-  jsonb,
   pgTable,
+  real,
   serial,
   text,
   timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+
+import { Address, Contact } from "../types";
 
 export const UsersTable = pgTable(
   "users",
@@ -33,19 +35,19 @@ export const ProductsTable = pgTable(
   {
     id: serial("id").primaryKey(),
     title: text("title").notNull(),
-    price: integer("price").notNull(),
-    reduced_price: integer("reduced_price"),
+    price: real("price").notNull(),
+    reduced_price: real("reduced_price"),
     slug: text("slug").notNull(),
     description: text("description").notNull(),
     composition: text("composition").notNull(),
     entretien: text("entretien").notNull(),
-    colour: jsonb("colour").notNull(),
-    collection: jsonb("collection").notNull(),
-    likes: serial("likes").notNull(),
-    images: jsonb("images").notNull(),
+    colour: json("colour").$type<string[]>().notNull(),
+    collection: json("collection").$type<string[]>().notNull(),
+    likes: integer("likes").notNull(),
+    images: json("images").$type<string[]>().notNull(),
     releaseDate: text("releaseDate").notNull(),
-    size_range: jsonb("size_range").notNull(),
-    size_available: jsonb("size_available").notNull(),
+    size_range: json("size_range").$type<number[]>().notNull(),
+    size_available: json("size_available").$type<number[]>().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
