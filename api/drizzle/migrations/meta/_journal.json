@@ -1,1 +1,13 @@
-{"version":"5","dialect":"pg","entries":[]}
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1711477509550,
+      "tag": "0000_flawless_victor_mancha",
+      "breakpoints": true
+    }
+  ]
+}

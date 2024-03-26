@@ -272,12 +272,14 @@ export const seed = async () => {
         lastname: "Batillet",
         email: "chloe@gmail.com",
         telephone: "0607080901",
+        password: "truc",
       },
       {
         firstname: "Elon",
         lastname: "Musk",
         email: "elon@gmail.com",
         telephone: "0907080901",
+        password: "truc",
       },
     ]);
 

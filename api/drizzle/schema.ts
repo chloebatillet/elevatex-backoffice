@@ -19,7 +19,8 @@ export const UsersTable = pgTable(
     firstname: text("firstname").notNull(),
     lastname: text("lastname").notNull(),
     email: text("email").notNull(),
-    telephone: text("telephone").notNull(),
+    password: text("password").notNull(),
+    telephone: text("telephone"),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),
   },
@@ -118,7 +119,7 @@ export const ProductsRelations = relations(ProductsTable, ({ many }) => ({
 }));
 
 export const OrdersRelations = relations(OrdersTable, ({ one, many }) => ({
-  user: one(UsersTable, {
+  client: one(UsersTable, {
     fields: [OrdersTable.user_id],
     references: [UsersTable.id],
   }),
