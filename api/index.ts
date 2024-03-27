@@ -3,14 +3,12 @@ import express from "express";
 import { Request, Response } from "express";
 import cors from "cors";
 import Stripe from "stripe";
-import { db } from "./drizzle/simple-connect";
 import { productController } from "./controllers/productController";
 import { userController } from "./controllers/userController";
 import { orderController } from "./controllers/orderController";
 
-// import { productController } from "./controllers/productController";
-
 dotenv.config();
+
 
 const app = express();
 const PORT = 3001;

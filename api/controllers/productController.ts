@@ -2,11 +2,44 @@ import { eq } from "drizzle-orm";
 import { ProductsTable } from "../drizzle/schema";
 import { db } from "../drizzle/simple-connect";
 import { Request, Response } from "express";
+import { desc, asc } from "drizzle-orm";
 
 export const productController = {
   getAll: async (req: Request, res: Response) => {
     try {
-      const products = await db.query.ProductsTable.findMany();
+      const { query } = req;
+      console.log(query);
+
+      let products;
+
+      //! bof bof
+      switch (query.sort) {
+        case "price":
+          console.log('price');
+          
+          products = await db
+            .select()
+            .from(ProductsTable)
+            .orderBy(asc(ProductsTable.price));
+          break;
+        case "popularity":
+          products = await db
+            .select()
+            .from(ProductsTable)
+            .orderBy(desc(ProductsTable.likes));
+          break;
+        case "newest":
+          products = await db
+            .select()
+            .from(ProductsTable)
+            .orderBy(desc(ProductsTable.releaseDate));
+          break;
+        default:
+          products = await db.query.ProductsTable.findMany();
+          break;
+      }
+
+      
       return res.json(products);
     } catch (error) {
       return res.status(400).json(error);
@@ -58,7 +91,6 @@ export const productController = {
       const { id } = req.params;
 
       console.log(req.body);
-      
 
       const product = await db.query.ProductsTable.findFirst({
         where: (prod, { eq }) => eq(prod.id, Number(id)),
