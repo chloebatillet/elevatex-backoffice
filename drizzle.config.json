@@ -1,0 +1,4 @@
+{
+  "schema": "./api/drizzle/schema.ts",
+  "out": "./api/drizzle/migrations"
+}

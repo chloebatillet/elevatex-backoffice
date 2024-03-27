@@ -1,2 +1,6 @@
+dist/
 node_modules
 .env
+.vercel
+.env.development.local
+migrations
