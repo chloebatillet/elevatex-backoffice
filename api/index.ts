@@ -30,16 +30,10 @@ app.get("/", async (_, res: Response) => {
 
 // Products -----------------------------------------
 app.get("/products", productController.getAll);
-app.get("/products/:slug", async (_, res: Response) => {
-  res.send("<h1>Product</h1>");
-});
-app.post("/add-product", async (_, res: Response) => {
-  res.send("<h1>Add product</h1>");
-});
-app.patch("/update-product/:id", async (_, res: Response) => {
-  res.send("<h1>Update product</h1>");
-}); // reduced_price / size_available / stock (total size_available?)
-//* route delete inutile pour le moment, seulement ne pas afficher les produits qui ont 0 stock en front
+app.get("/product/:id", productController.getOne);
+app.post("/create-product", productController.create);
+app.patch("/update-product/:id", productController.update); // reduced_price / size_available / stock (total size_available?)
+app.delete("/delete-product/:id", productController.delete);
 
 // Users --------------------------------------------
 app.get("/client/:id", userController.getOne);

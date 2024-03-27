@@ -20,7 +20,7 @@ export const userController = {
       });
       return res.json(clients);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json(error);
     }
   },
 
@@ -46,11 +46,11 @@ export const userController = {
         },
       });
 
-      return client === undefined
-        ? res.json(`No user found with id ${id}`)
-        : res.json(client);
+      return client
+        ? res.json(client)
+        : res.status(404).json(`No user found with id ${id}`);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json(error);
     }
   },
 
@@ -61,16 +61,16 @@ export const userController = {
       });
 
       if (alreadyExists) {
-        return res.send(
-          "(┬┬﹏┬┬) This email is already used. Try to login instead!"
-        );
+        return res
+          .status(400)
+          .json("(┬┬﹏┬┬) This email is already used. Try to login instead!");
       }
 
       await db.insert(UsersTable).values(req.body);
 
-      return res.send("ヾ(＠⌒ー⌒＠)ノ Account created succesfully!");
+      return res.json("ヾ(＠⌒ー⌒＠)ノ Account created succesfully!");
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json(error);
     }
   },
 
@@ -83,7 +83,7 @@ export const userController = {
       });
 
       if (!clientExists) {
-        return res.send("(┬┬﹏┬┬) User not found!");
+        return res.status(404).json("(┬┬﹏┬┬) User not found!");
       }
 
       if (req.body.email) {
@@ -92,7 +92,7 @@ export const userController = {
         });
 
         if (existingEmail) {
-          return res.send("(┬┬﹏┬┬) Email already used!");
+          return res.status(400).json("(┬┬﹏┬┬) Email already used!");
         }
       }
 
@@ -101,11 +101,11 @@ export const userController = {
         .set(req.body)
         .where(eq(UsersTable.id, Number(id)));
 
-      return res.send("ヾ(＠⌒ー⌒＠)ノ Infos updated succesfully!");
+      return res.json("ヾ(＠⌒ー⌒＠)ノ Infos updated succesfully!");
     } catch (error) {
       console.log(error);
 
-      return res.status(400).send(error);
+      return res.status(400).json(error);
     }
   },
 };

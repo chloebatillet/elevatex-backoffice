@@ -11,7 +11,7 @@ export const orderController = {
       });
       return res.json(orders);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json(error);
     }
   },
 
@@ -26,29 +26,36 @@ export const orderController = {
         },
       });
 
-      return order === undefined
-        ? res.json(`No order found with id ${id}`)
-        : res.json(order);
+      return order
+        ? res.json(order)
+        : res.status(404).json(`(┬┬﹏┬┬) No order found with id ${id}`);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json(error);
     }
   },
 
   getAllFromClient: async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const order = await db.query.OrdersTable.findFirst({
+
+      const client = await db.query.UsersTable.findFirst({
+        where: (user, { eq }) => eq(user.id, Number(id)),
+      });
+
+      if (!client) {
+        return res.status(404).json(`(┬┬﹏┬┬) No user found with id ${id}`);
+      }
+
+      const orders = await db.query.OrdersTable.findMany({
         where: (order, { eq }) => eq(order.user_id, Number(id)),
         with: {
           orderDetails: true,
         },
       });
 
-      return order === undefined
-        ? res.json(`No user found with id ${id}`)
-        : res.json(order);
+      return res.json(orders);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json(error);
     }
   },
 };
