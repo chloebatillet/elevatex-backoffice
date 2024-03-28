@@ -93,7 +93,7 @@ export const OrderDetailsTable = pgTable(
       .references(() => OrdersTable.id),
     product_id: integer("product_id")
       .notNull()
-      .references(() => OrdersTable.id),
+      .references(() => ProductsTable.id),
     size: integer("size").notNull(),
     colour: text("colour").notNull(),
     price: integer("price").notNull(),
@@ -114,8 +114,12 @@ export const UsersRelations = relations(UsersTable, ({ many }) => ({
   ordersPassed: many(OrdersTable),
 }));
 
-export const ProductsRelations = relations(ProductsTable, ({ many }) => ({
-  ordered: many(OrderDetailsTable),
+export const ProductsRelations = relations(ProductsTable, ({ many, one }) => ({
+  // ordered: many(OrderDetailsTable),
+  ordered: one(OrderDetailsTable, {
+    fields: [ProductsTable.id],
+    references: [OrderDetailsTable.product_id],
+  }),
 }));
 
 export const OrdersRelations = relations(OrdersTable, ({ one, many }) => ({

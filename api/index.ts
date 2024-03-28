@@ -45,7 +45,7 @@ app.patch("/update-client/:id", userController.updateClientInfo);
 app.get("/orders", orderController.getAll);
 app.get("/order/:id", orderController.getOne);
 app.get("/orders/client/:id", orderController.getAllFromClient);
-app.post("/new-order");
+app.post("/new-order", orderController.create);
 
 // Payments -----------------------------------------
 app.get("/config", async (_, res: Response) => {
